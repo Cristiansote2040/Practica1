@@ -75,41 +75,85 @@ hr {
   width: 50%;
 }
 
+/* --- Estilos Base (Desktop) --- */
 .Acerca {
-  padding: 0 12.5%;
+  padding: 80px 10%; /* Cambié el 12.5% por algo más estándar */
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh; /* min-height es mejor que height fijo */
 }
 
 .Acerca-Bloque {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 40px; /* Agrega espacio entre imagen y texto */
+  width: 100%;
 }
+
+.Acer-img {
+  background-image: url("https://www.justretail.news/wp-content/uploads/2023/12/Basketball-Emotion-Madrid-03.jpg");
+  width: 450px; /* Ancho fijo para desktop o usemos flex-basis */
+  height: 600px;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed; 
+  border-radius: 15px; /* Un toque más moderno */
+  flex-shrink: 0;
+}
+
 .Acerca-Texto {
   display: flex;
-  text-wrap: initial;
   flex-direction: column;
   width: 50%;
 }
+
 .Acerca-Texto h1 {
-  margin: 0 auto;
+  font-size: 3rem;
+  margin-bottom: 20px;
 }
+
 .Acerca-Texto p {
-  text-align: start;
-  margin-top: 5%;
-  margin-left: 8%;
+  text-align: left;
+  line-height: 1.6;
+  font-size: 1.1rem;
 }
-.Acer-img {
-  background-image: url("https://www.justretail.news/wp-content/uploads/2023/12/Basketball-Emotion-Madrid-03.jpg");
-  width: 50vh;
-  height: 80vh;
-  background-position: -250px 25px;
-  background-size: cover;
-  background-attachment: fixed; /* 🔥 efecto */
+
+/* --- RESPONSIVE MÓVIL --- */
+@media (max-width: 900px) {
+  .Acerca {
+    padding: 60px 20px;
+    height: auto; /* Que el contenido mande */
+  }
+
+  .Acerca-Bloque {
+    flex-direction: column; /* Se ponen uno arriba del otro */
+    text-align: center;
+  }
+
+  .Acer-img {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 350px; /* Bajamos la altura para que no ocupe toda la pantalla */
+    background-attachment: scroll; /* IMPORTANTE: Fixed se rompe en móviles */
+    background-position: center;
+  }
+
+  .Acerca-Texto {
+    width: 100%; /* El texto ahora ocupa todo el ancho */
+    padding: 0 10px;
+  }
+
+  .Acerca-Texto h1 {
+    font-size: 2rem;
+    margin-top: 20px;
+  }
+
+  .Acerca-Texto p {
+    text-align: center; /* En móvil queda mejor centrado si el bloque es vertical */
+    margin-left: 0; /* Quitamos ese 8% que en móvil te lo corre de lugar */
+    margin-top: 15px;
+  }
 }
 .card-img-top {
   width: 100%;
@@ -902,4 +946,185 @@ h2 {
   border-radius: 12px;
   background: linear-gradient(135deg, #1f8f3a, #28a745);
   text-align: left;
+}
+/* Contenedor */
+.cart-container {
+  max-width: 900px;
+  width: 92%;
+  margin: 100px auto; /* Aire para el Nav sticky */
+  font-family: 'Inter', sans-serif;
+}
+
+.cart-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+/* Tarjeta de Producto */
+.cart-card {
+  display: flex;
+  flex-wrap: wrap; /* CLAVE: Si no hay espacio, el precio baja solo */
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 15px;
+  gap: 20px;
+}
+
+.cart-item-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 260px; /* Evita que el texto se aplaste demasiado */
+}
+
+.cart-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #f9f9f9;
+}
+
+.cart-details h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.unit-price {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+/* Selector de cantidad */
+.qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.qty-selector button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.qty-selector span {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Derecha: Subtotal y Eliminar */
+.cart-item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.subtotal-box {
+  text-align: right;
+}
+
+.subtotal-box span {
+  font-size: 0.8rem;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: #ff4757;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Footer */
+.cart-footer {
+  margin-top: 40px;
+  padding: 25px;
+  background: #fbfbfb;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.total-display {
+  text-align: right;
+}
+
+.total-display h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  color: #000;
+}
+
+.cart-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.btn-clear {
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-buy {
+  padding: 12px 35px;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* --- MEDIA QUERIES (EL TOQUE FINAL) --- */
+@media (max-width: 600px) {
+  .cart-item-main {
+    min-width: 100%; /* Ocupa todo el ancho en celulares chicos */
+  }
+
+  .cart-item-right {
+    width: 100%;
+    flex-direction: row; /* El precio y eliminar se ponen en fila abajo */
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f5f5f5;
+    padding-top: 15px;
+  }
+
+  .cart-buttons {
+    flex-direction: column-reverse; /* Comprar queda arriba, Vaciar abajo */
+  }
+
+  .btn-buy, .btn-clear {
+    width: 100%; /* Botones gigantes fáciles de tocar */
+  }
+
+  .total-display h2 {
+    font-size: 1.8rem;
+  }
 }

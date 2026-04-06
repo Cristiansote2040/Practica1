@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Carrito } from "../Context/Create/Carrito";
 
-
 export const Nav = () => {
   const { state } = useContext(Carrito);
   const [search, setSearch] = useState("");
@@ -32,12 +31,8 @@ export const Nav = () => {
 
         <div className="navbar navbar-expand-lg navMenu">
           <div className="container-fluid navRow">
-
             {/* HAMBURGUESA */}
-            <div
-              className="Menu-Btn"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
+            <div className="Menu-Btn" onClick={() => setMenuOpen(!menuOpen)}>
               ☰
             </div>
 
@@ -46,6 +41,18 @@ export const Nav = () => {
               className={`navbar-nav navLinks ${menuOpen ? "open" : ""}`}
               id="RamaIds"
             >
+              <li>
+                {" "}
+                <form onSubmit={handleSearch} className="navSearch">
+                  <input
+                    type="text"
+                    placeholder="Buscar producto..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </form>
+              </li>
+
               <li className="nav-item">
                 <Link
                   className="nav-link"
@@ -89,15 +96,6 @@ export const Nav = () => {
 
             {/* DERECHA */}
             <div className="navLeft">
-              <form onSubmit={handleSearch} className="navSearch">
-                <input
-                  type="text"
-                  placeholder="Buscar producto..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </form>
-
               <span id="span-Cart">{state.length}</span>
 
               <Link to="/Carrito">
@@ -106,7 +104,6 @@ export const Nav = () => {
                 </button>
               </Link>
             </div>
-
           </div>
         </div>
       </div>
