@@ -6,6 +6,7 @@ export default function ProductoDetalle({ product }) {
   const [cantidad, setCantidad] = useState(1);
   return (
     <div
+    className="Product"
       style={{
         display: "flex",
         border: "1px solid #ccc",

@@ -1,6 +1,6 @@
 body {
   background-color: #f5f5f5;
-  padding-top: 140px;
+  padding-top: 120px;
 }
 
 .navbar {
@@ -27,7 +27,6 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0px 0px 0px;
   font-family: "Anton", sans-serif;
   background-color: rgba(0, 0, 0, 0.87);
 }
@@ -75,7 +74,6 @@ hr {
   font-size: 100%;
   width: 50%;
 }
-
 
 .Acerca {
   padding: 0 12.5%;
@@ -621,8 +619,6 @@ hr {
   transform: scale(0.97);
 }
 
-
-
 .products-grid {
   flex: 1;
   display: grid;
@@ -642,12 +638,10 @@ hr {
   flex-direction: column;
 }
 
-
 .card-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
-
 
 .card-card img {
   width: 100%;
@@ -658,7 +652,6 @@ hr {
 .card-card:hover img {
   transform: scale(1.05);
 }
-
 
 .price {
   font-size: 20px;
@@ -677,7 +670,7 @@ hr {
   border-radius: 20px;
   font-size: 12px;
   font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #span-Cart {
@@ -693,8 +686,8 @@ hr {
 }
 a {
   text-decoration: none; /* quita el subrayado */
-  color: inherit;        /* hereda el color del padre */
-  cursor: pointer;       /* puntero al pasar el mouse */
+  color: inherit; /* hereda el color del padre */
+  cursor: pointer; /* puntero al pasar el mouse */
 }
 
 /* si querés forzar en WebKit */
@@ -702,14 +695,15 @@ a:-webkit-any-link {
   color: inherit !important;
   cursor: pointer;
 }
-h2{
+h2 {
   margin-top: 5px;
 }
-.heroTrabajo__btn{
+.heroTrabajo__btn {
   background-color: black;
   border: 1px solid white;
-}.story-container {
-  font-family: 'Segoe UI', sans-serif;
+}
+.story-container {
+  font-family: "Segoe UI", sans-serif;
   background: linear-gradient(180deg, #f4f6f9, #e9edf3);
   color: #1a1a1a;
   min-height: 120vh; /* más de 100vh */
@@ -720,7 +714,7 @@ h2{
   max-width: 900px;
   margin: auto;
 }
-.CardBo{
+.CardBo {
   padding: 5%;
 }
 .story-content {
@@ -749,29 +743,54 @@ h2{
 }
 
 /* MOBILE */
-@media (max-width: 740px) {
-
+@media (max-width: 770px) {
+  .Acerca-Bloque {
+    gap: 25px;
+  }
+  .Product{
+    flex-direction: column;
+  }
+  .add-btn {
+    overflow-wrap: break-word;
+  }
+  .btn {
+    overflow-wrap: break-word;
+  }
+  .active-category {
+    overflow-wrap: break-word;
+  }
+  .sidebar {
+    width: 50%;
+  }
+  .sidebar bottom {
+    overflow-wrap: anywhere;
+  }
+  .Acerca-Texto h1 {
+    text-align: center;
+  }
   .Menu-Btn {
     display: block;
   }
-  .sidebar{
-    width: 25%;
-  }
-  .sidebar h3{
+  .sidebar h3 {
     overflow-wrap: anywhere;
     text-align: center;
+  }
+  .navSearch input{
+    width: 100%;
   }
   .navLinks {
     flex-direction: column;
     width: 100%;
     background: white;
-    position: absolute;
-    top: 60px;
+    position:absolute;
+    top: 58px;
     left: 0;
     overflow: hidden;
 
     max-height: 0;
-    transition: max-height 0.4s ease, padding 0.3s ease;
+    transition:
+      max-height 0.4s ease,
+      padding 0.3s ease;
   }
 
   .navLinks.open {
@@ -811,4 +830,76 @@ h2{
 .pagination button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+.coupon-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 16px;
+  background: #111;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.coupon-container h2 {
+  margin-bottom: 10px;
+}
+
+.coupon-description {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.coupon-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.coupon-input-group input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.coupon-input-group button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #ff4d4d;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.coupon-input-group button:hover {
+  background: #ff1a1a;
+}
+
+.coupon-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.coupon-message.success {
+  background: #1f8f3a;
+}
+
+.coupon-message.error {
+  background: #a12b2b;
+}
+
+.coupon-success-card {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1f8f3a, #28a745);
+  text-align: left;
 }

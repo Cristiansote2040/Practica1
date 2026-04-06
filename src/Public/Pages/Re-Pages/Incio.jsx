@@ -2,8 +2,9 @@ import RopaSlider from "../../Components/Comp-Pages/Secciones";
 import DondeEstamos from "../../Components/Comp-Pages/Ubicacion";
 import FormasDePago from "../../Components/Comp-Pages/Medios-de-Pago";
 import UnirteNosotros from "../../Components/Comp-Pages/Trabajo";
-
+import {CouponInput} from "../../Components/Comp-Pages/Cupon/cupon";
 export const Incio = () => {
+  
   return (
     <>
       <div id="carouselExample" className="carousel slide">
@@ -57,8 +58,9 @@ export const Incio = () => {
         <section id="FormasPagar">
         <FormasDePago></FormasDePago>
         </section>
-        <div className="Espacio"></div>
-
+        <section className="Cupon">
+          <CouponInput></CouponInput>
+        </section>
         <section className="Etc" id="Trabajo">
           <UnirteNosotros></UnirteNosotros>
         </section>

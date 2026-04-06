@@ -13,7 +13,7 @@ export const Nav = () => {
     e.preventDefault();
 
     if (search.trim() !== "") {
-      navigate(`/Productos?search=${search}`);
+      navigate(`/Productos/?search=${search}`);
       setSearch("");
       setMenuOpen(false);
     }

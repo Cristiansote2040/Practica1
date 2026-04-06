@@ -5,6 +5,7 @@ export const FAQ = () => {
 
   const toggle = (index) => {
     setActivo(activo === index ? null : index);
+    
   };
 
   const preguntas = [

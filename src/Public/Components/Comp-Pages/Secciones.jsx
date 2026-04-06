@@ -1,6 +1,6 @@
 import { useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Productos} from "../Context/Create/Datos"; // <-- tu contexto global
+import { Productos } from "../Context/Create/Datos"; // <-- tu contexto global
 
 export default function RopaSlider() {
   const sliderRef = useRef(null);
@@ -16,16 +16,25 @@ export default function RopaSlider() {
   };
 
   // 🔹 Generar categorías automáticamente desde los productos
+  const listaimg = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDtqvHRRkHzBPdlAxdN5zSMl9a4SqkvYwZpg&s",
+    "https://acdn-us.mitiendanube.com/stores/001/402/757/products/diseno-sin-titulo-2023-11-16t154557-438-7e55ff83031afc712017001623472433-1024-1024.webp",
+    "https://http2.mlstatic.com/D_791883-CBT106677518569_022026-C.jpg",
+    "https://thumbs.dreamstime.com/b/equipamiento-y-accesorios-de-baloncesto-430645699.jpg",
+    "https://img.freepik.com/vector-gratis/equipo-baloncesto_23-2147517411.jpg?semt=ais_user_personalization&w=740&q=80",
+    "https://m.media-amazon.com/images/I/81LfVti7G5L.jpg",
+    "https://img.freepik.com/foto-gratis/jugador-baloncesto-entrenamiento-tiro-medio_23-2148393856.jpg?semt=ais_user_personalization&w=740&q=80",
+  ];
   const categorias = [...new Set(productsData.map((p) => p.category))].map(
     (cat, index) => ({
       id: index,
       name: cat,
-      img: `https://picsum.photos/300/300?${index}`, // imagen placeholder
-    })
+      image: listaimg[index],
+    }),
   );
 
   const goToCategory = (category) => {
-    setSelectedCategory(category);        // actualiza contexto global
+    setSelectedCategory(category); // actualiza contexto global
     navigate(`/Productos/?category=${category}`); // actualiza URL
   };
 
@@ -66,7 +75,7 @@ export default function RopaSlider() {
             }}
           >
             <img
-              src={cat.img}
+              src={cat.image}
               alt={cat.name}
               style={{ width: "100%", height: "200px", objectFit: "cover" }}
             />

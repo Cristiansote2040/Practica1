@@ -24,8 +24,8 @@ export const Footer = () => {
 
           <div className="footerGrid">
             <Link to={"/Informacion"}>Quiénes somos</Link>
-            <Link to={"/productos"}>Nuestros productos</Link>
-            <Link to="/productos?promo=true">Promociones</Link>{" "}
+            <Link to={"/Productos?page=1"}>Nuestros productos</Link>
+            <Link to="/productos?promo=true">Promociones</Link>
             <Link to={"/Ayuda"}>Ayuda</Link>
           </div>
         </div>

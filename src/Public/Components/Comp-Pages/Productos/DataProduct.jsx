@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useContext, useMemo, useEffect } from "react";
 import { Productos } from "../../Context/Create/Datos";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -25,9 +26,30 @@ export default function ProductosPage() {
 
   const productsPerPage = 8;
 
+  // 🔥 FUNCIÓN PARA CALCULAR DESCUENTO
+  const getDiscountedPrice = (product) => {
+    if (!product.promo) return product.price;
+
+    const { type, value } = product.promo;
+
+    switch (type) {
+      case "percentage":
+        return Math.round(product.price - (product.price * value) / 100);
+
+      case "fixed":
+        return product.price - value;
+
+      case "2x1":
+        return product.price; // El cálculo real se hace en carrito
+
+      default:
+        return product.price;
+    }
+  };
+
   // 🏷 Categorías dinámicas
   const categories = useMemo(() => {
-    return ["All", ...new Set(productsData.map((p) => p.category))];
+    return ["ALL", ...new Set(productsData.map((p) => p.category))];
   }, [productsData]);
 
   useEffect(() => {
@@ -35,12 +57,15 @@ export default function ProductosPage() {
       setShowPromoOnly(true);
     }
   }, [promoFromUrl]);
+ useEffect(() => {
+  const params = new URLSearchParams(location.search);
 
-  // 🔄 Resetear a página 1 si cambian filtros
-  useEffect(() => {
-    navigate(`/Productos?page=1`);
-  }, [selectedCategory, showPromoOnly, sortOrder, search]);
+  params.set("page", "1");
 
+  navigate(`/Productos?${params.toString()}`, { replace: true });
+}, [selectedCategory, showPromoOnly, sortOrder, search]);
+
+  
   const normalizeText = (text) =>
     text
       .toLowerCase()
@@ -54,12 +79,14 @@ export default function ProductosPage() {
     if (search) {
       const normalizedSearch = normalizeText(search);
       result = result.filter((product) =>
-        normalizeText(product.name).includes(normalizedSearch)
+        normalizeText(product.name).includes(normalizedSearch),
       );
+      console.log('Searcheado',result);
+      
     }
 
     // 🏀 Filtrar categoría
-    if (selectedCategory !== "All") {
+    if (selectedCategory !== "ALL") {
       result = result.filter((p) => p.category === selectedCategory);
     }
 
@@ -70,19 +97,25 @@ export default function ProductosPage() {
 
     // 🔝 Promos primero
     result.sort((a, b) =>
-      a.promo && !b.promo ? -1 : !a.promo && b.promo ? 1 : 0
+      a.promo && !b.promo ? -1 : !a.promo && b.promo ? 1 : 0,
     );
 
-    // 💲 Orden por precio
-    if (sortOrder === "asc") result.sort((a, b) => a.price - b.price);
-    if (sortOrder === "desc") result.sort((a, b) => b.price - a.price);
+    // 💲 Orden por precio (CON DESCUENTO)
+    if (sortOrder === "asc")
+      result.sort((a, b) => getDiscountedPrice(a) - getDiscountedPrice(b));
+
+    if (sortOrder === "desc")
+      result.sort((a, b) => getDiscountedPrice(b) - getDiscountedPrice(a));
 
     return result;
   }, [productsData, selectedCategory, showPromoOnly, sortOrder, search]);
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const startIndex = (pageFromUrl - 1) * productsPerPage;
+
   const endIndex = startIndex + productsPerPage;
+  console.log(endIndex);
+
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   const changePage = (newPage) => {
@@ -93,14 +126,20 @@ export default function ProductosPage() {
   const getNoResultsMessage = () => {
     if (search) return "No encontramos productos con ese nombre 😢";
     if (showPromoOnly) return "No hay promociones activas 😢";
-    if (selectedCategory !== "All")
+    if (selectedCategory !== "ALL")
       return "No encontramos productos en esta categoría 😔";
     return "Ups... no encontramos productos 😕";
   };
 
-  const handleCategory = (cat) => {
-    setSelectedCategory(cat);
-  };
+const handleCategory = (cat) => {
+  setSelectedCategory(cat);
+
+  const params = new URLSearchParams(location.search);
+  params.delete("search"); // 🔥 borra el search
+  params.set("page", "1");
+
+  navigate(`/Productos?${params.toString()}`);
+};
 
   return (
     <div className="products-page">
@@ -116,24 +155,25 @@ export default function ProductosPage() {
               key={cat}
               onClick={() => handleCategory(cat)}
               className={selectedCategory === cat ? "active-category" : ""}
+              style={{ overflowWrap: "break-word" }}
             >
-              {cat === "All" ? "Todas" : cat}
+              {cat === "ALL" ? "Todas" : cat}
             </button>
           ))}
 
           <h3>Promociones</h3>
-          <button onClick={() => setShowPromoOnly(true)}>
+          <button className="Btn" onClick={() => setShowPromoOnly(true)}>
             Solo en descuento
           </button>
-          <button onClick={() => setShowPromoOnly(false)}>
+          <button className="Btn" onClick={() => setShowPromoOnly(false)}>
             Mostrar todos
           </button>
 
           <h3>Ordenar por precio</h3>
-          <button onClick={() => setSortOrder("asc")}>
+          <button className="Btn" onClick={() => setSortOrder("asc")}>
             Menor a mayor
           </button>
-          <button onClick={() => setSortOrder("desc")}>
+          <button className="Btn" onClick={() => setSortOrder("desc")}>
             Mayor a menor
           </button>
         </aside>
@@ -148,7 +188,13 @@ export default function ProductosPage() {
             currentProducts.map((product) => (
               <div key={product.id} className="card-card">
                 {product.promo && (
-                  <span className="promo-badge">Promo</span>
+                  <span className="promo-badge">
+                    {product.promo.type === "percentage" &&
+                      `-${product.promo.value}%`}
+                    {product.promo.type === "fixed" &&
+                      `-$${product.promo.value}`}
+                    {product.promo.type === "2x1" && "2x1"}
+                  </span>
                 )}
 
                 <img src={product.image} alt={product.name} />
@@ -156,7 +202,56 @@ export default function ProductosPage() {
                 <div className="CardBo">
                   <div onClick={() => navigate(`/Productos/${product.id}`)}>
                     <h2>{product.name}</h2>
-                    <p className="price">${product.price}</p>
+                    {product.promo ? (
+                      <>
+                        {product.promo.type === "2x1" ? (
+                          <>
+                            <p className="price">Precio: ${product.price}</p>
+                            <p style={{ color: "green", fontWeight: "bold" }}>
+                              Promoción 2x1 🔥 (Llevás 2 y pagás 1)
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <p>
+                              Precio original:
+                              <span
+                                style={{
+                                  textDecoration: "line-through",
+                                  color: "gray",
+                                  marginLeft: "5px",
+                                }}
+                              >
+                                ${product.price}
+                              </span>
+                            </p>
+
+                            <p>
+                              {product.promo.type === "percentage" && (
+                                <>Descuento ({product.promo.value}%): </>
+                              )}
+
+                              {product.promo.type === "fixed" && (
+                                <>Descuento (${product.promo.value}): </>
+                              )}
+
+                              <span
+                                className="price"
+                                style={{
+                                  color: "red",
+                                  fontWeight: "bold",
+                                  marginLeft: "5px",
+                                }}
+                              >
+                                ${getDiscountedPrice(product)}
+                              </span>
+                            </p>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <p className="price">${product.price}</p>
+                    )}
                   </div>
 
                   <button
@@ -168,15 +263,15 @@ export default function ProductosPage() {
                     }
                     className="add-btn"
                     style={{
-            padding: "10px 25px",
-            background: "linear-gradient(90deg, #ff7e5f, #feb47b)",
-            border: "none",
-            borderRadius: "8px",
-            color: "white",
-            fontWeight: "bold",
-            cursor: "pointer",
-            alignSelf: "flex-start",
-          }}
+                      padding: "10px 25px",
+                      background: "linear-gradient(90deg, #ff7e5f, #feb47b)",
+                      border: "none",
+                      borderRadius: "8px",
+                      color: "white",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      alignSelf: "flex-start",
+                    }}
                   >
                     Agregar
                   </button>
@@ -208,9 +303,9 @@ export default function ProductosPage() {
           ))}
 
           <button
+            className="Btn"
             disabled={pageFromUrl === totalPages}
             onClick={() => changePage(pageFromUrl + 1)}
-            
           >
             Siguiente »
           </button>
